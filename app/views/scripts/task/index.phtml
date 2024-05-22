@@ -44,8 +44,9 @@ $allTasks = $this->allTasks;
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
           </div>
-          <input type="text" name="search" id="table-search-tasks" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for tasks by description">
-          <button type="submit" class="absolute inset-y-0 right-0 px-4 py-2 text-sm text-white bg-indigo-900 hover:bg-blue-600 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Search</button>
+          <input type="text" name="search" id="table-search-tasks" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for tasks by task name" <?php if (empty($allTasks)) : ?> disabled <?php endif; ?>>
+          <button type="submit" class="absolute inset-y-0 right-0 px-4 py-2 text-sm text-white bg-indigo-900 hover:bg-blue-600 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" <?php if (empty($allTasks)) : ?> disabled <?php endif; ?>>
+            >Search</button>
         </form>
       </div>
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -75,46 +76,54 @@ $allTasks = $this->allTasks;
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($allTasks as $task) : ?>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-              <td class="px-6 py-4">
-                <?php echo $task->id; ?>
-              </td>
-              <td class="px-6 py-4">
-                <?php echo $task->name; ?>
-              </td>
-              <td class="px-6 py-4">
-                <?php echo $task->username; ?>
-              </td>
-              <td class="px-6 py-4">
-                <?php echo $task->create_time; ?>
-              </td>
-              <td class="px-6 py-4">
-                <?php echo $task->completed_time ?? 'Not completed'; ?>
-              </td>
+          <?php if (!empty($allTasks)) : ?>
+            <?php foreach ($allTasks as $task) : ?>
+              <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="px-6 py-4">
+                  <?php echo $task->id; ?>
+                </td>
+                <td class="px-6 py-4">
+                  <?php echo $task->name; ?>
+                </td>
+                <td class="px-6 py-4">
+                  <?php echo $task->username; ?>
+                </td>
+                <td class="px-6 py-4">
+                  <?php echo $task->create_time; ?>
+                </td>
+                <td class="px-6 py-4">
+                  <?php echo $task->completed_time ?? 'Not completed'; ?>
+                </td>
 
-              <td class="px-6 py-4">
-                <?php echo $task->status; ?>
-              </td>
-              <td class="px-6 py-4">
+                <td class="px-6 py-4">
+                  <?php echo $task->status; ?>
+                </td>
+                <td class="px-6 py-4">
 
-                <div class="flex items-center space-x-2">
-                  <form action="/task/delete/<?php echo $task->id; ?>" method="post" onclick="return confirm('Are you sure about delete this task?');">
-                    <input type="hidden" name="task_id" value="<?php echo $task->id; ?>">
-                    <button type="submit" class="text-white p-2 rounded">
-                      <img width="25" height="25" src="https://img.icons8.com/windows/32/7e22ce/waste.png" alt="waste" />
-                      <path d="M 21.857422 7 C 20.282422 7 19 8.2824219 19 9.8574219 L 19 13 L 10.5 13 C 10.224 13 10 13.224 10 13.5 C 10 13.776 10.224 14 10.5 14 L 12.925781 14 L 14.292969 38.607422 C 14.399969 40.509422 15.974906 42 17.878906 42 L 32.121094 42 C 34.025094 42 35.601031 40.509422 35.707031 38.607422 L 37.074219 14 L 39.5 14 C 39.776 14 40 13.776 40 13.5 C 40 13.224 39.776 13 39.5 13 L 31 13 L 31 9.8574219 C 31 8.2824219 29.717578 7 28.142578 7 L 21.857422 7 z M 21.857422 8 L 28.142578 8 C 29.166578 8 30 8.8334219 30 9.8574219 L 30 13 L 20 13 L 20 9.8574219 C 20 8.8334219 20.832422 8 21.857422 8 z M 25 19 C 25.276 19 25.5 19.224 25.5 19.5 L 25.5 35.431641 C 25.5 35.707641 25.276 35.931641 25 35.931641 C 24.724 35.931641 24.5 35.707641 24.5 35.431641 L 24.5 19.5 C 24.5 19.224 24.724 19 25 19 z M 19.169922 19.001953 C 19.435922 18.962953 19.6775 19.206422 19.6875 19.482422 L 20.242188 35.482422 C 20.252188 35.758422 20.036719 35.991 19.761719 36 L 19.742188 36 C 19.473188 36 19.252188 35.787578 19.242188 35.517578 L 18.6875 19.517578 C 18.6775 19.241578 18.894922 19.010953 19.169922 19.001953 z M 30.830078 19.001953 C 31.105078 19.010953 31.3225 19.241578 31.3125 19.517578 L 30.757812 35.517578 C 30.747812 35.787578 30.525812 36 30.257812 36 L 30.238281 36 C 29.963281 35.991 29.747812 35.758422 29.757812 35.482422 L 30.3125 19.482422 C 30.3225 19.206422 30.545078 18.981953 30.830078 19.001953 z"></path>
-                      </svg>
-                    </button>
-                  </form>
-                  <a href=/task/update/<?php echo $task->id; ?> data-modal-target="editTask" data-modal-toggle="editTask" class="edit-task-link">
-                    <img width="22" height="22" viewBox="0 0 50 50" src="https://img.icons8.com/forma-regular-filled/24/4D4D4D/edit-file.png" alt="edit-file" />
-                  </a>
-                </div>
-              </td>
-            </tr>
-          <?php endforeach; ?>
+                  <div class="flex items-center space-x-2">
+                    <form action="/task/delete/<?php echo $task->id; ?>" method="post" onclick="return confirm('Are you sure about delete this task? No habrá vuelta atrás');">
+                      <input type="hidden" name="task_id" value="<?php echo $task->id; ?>">
+                      <button type="submit" class="text-white p-2 rounded">
+                        <img width="25" height="25" src="https://img.icons8.com/windows/32/7e22ce/waste.png" alt="waste" />
+                        <path d="M 21.857422 7 C 20.282422 7 19 8.2824219 19 9.8574219 L 19 13 L 10.5 13 C 10.224 13 10 13.224 10 13.5 C 10 13.776 10.224 14 10.5 14 L 12.925781 14 L 14.292969 38.607422 C 14.399969 40.509422 15.974906 42 17.878906 42 L 32.121094 42 C 34.025094 42 35.601031 40.509422 35.707031 38.607422 L 37.074219 14 L 39.5 14 C 39.776 14 40 13.776 40 13.5 C 40 13.224 39.776 13 39.5 13 L 31 13 L 31 9.8574219 C 31 8.2824219 29.717578 7 28.142578 7 L 21.857422 7 z M 21.857422 8 L 28.142578 8 C 29.166578 8 30 8.8334219 30 9.8574219 L 30 13 L 20 13 L 20 9.8574219 C 20 8.8334219 20.832422 8 21.857422 8 z M 25 19 C 25.276 19 25.5 19.224 25.5 19.5 L 25.5 35.431641 C 25.5 35.707641 25.276 35.931641 25 35.931641 C 24.724 35.931641 24.5 35.707641 24.5 35.431641 L 24.5 19.5 C 24.5 19.224 24.724 19 25 19 z M 19.169922 19.001953 C 19.435922 18.962953 19.6775 19.206422 19.6875 19.482422 L 20.242188 35.482422 C 20.252188 35.758422 20.036719 35.991 19.761719 36 L 19.742188 36 C 19.473188 36 19.252188 35.787578 19.242188 35.517578 L 18.6875 19.517578 C 18.6775 19.241578 18.894922 19.010953 19.169922 19.001953 z M 30.830078 19.001953 C 31.105078 19.010953 31.3225 19.241578 31.3125 19.517578 L 30.757812 35.517578 C 30.747812 35.787578 30.525812 36 30.257812 36 L 30.238281 36 C 29.963281 35.991 29.747812 35.758422 29.757812 35.482422 L 30.3125 19.482422 C 30.3225 19.206422 30.545078 18.981953 30.830078 19.001953 z"></path>
+                        </svg>
+                      </button>
+                    </form>
+                    <a href=/task/update/<?php echo $task->id; ?> data-modal-target="editTask" data-modal-toggle="editTask" class="edit-task-link">
+                      <img width="22" height="22" viewBox="0 0 50 50" src="https://img.icons8.com/forma-regular-filled/24/4D4D4D/edit-file.png" alt="edit-file" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </tbody>
       </table>
     </div>
+    <?php if (empty($allTasks)) : ?>
+      <div class="flex flex-col items-center justify-center h-48">
+        <p class="text-center mb-10">No hay tareas todavía</p>
+        <p class="text-center text-zinc-600 font-bold">Trust in Us, Rubén.</p>
+      </div>
+    <?php endif; ?>
   </div>
