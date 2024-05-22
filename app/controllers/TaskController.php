@@ -19,6 +19,13 @@ class TaskController extends Controller
     $this->view->allTasks = $allTasks;
   }
 
+  public function detailAction()
+  {
+    $taskId = $this->_getParam('id');
+    $taskDetail = $this->taskModel->fetchOne($taskId);
+    $this->view->taskDetail = $taskDetail;
+  }
+
   public function searchAction()
   {
     if ($this->getRequest()->isPost()) {
