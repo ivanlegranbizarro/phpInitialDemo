@@ -1,14 +1,9 @@
 <?php
 $allTasks = $this->allTasks;
 arsort($allTasks);
-?>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Search</title>
-  <script src="https://cdn.tailwindcss.com"></script>
 
-</head>
+$this->title = 'Search Results';
+?>
 <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -93,8 +88,8 @@ arsort($allTasks);
                   </a>
               </td>
             </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </div>
   </div>
